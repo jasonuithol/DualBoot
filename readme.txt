@@ -1,0 +1,37 @@
+sudo apt install os-prober
+sudo nano /etc/default/grub
+	GRUB_DISABLE_OS_PROBER=false
+sudo update-grub
+	"Found Windows Boot Manager on /dev/sda1@/EFI/Microsoft/Boot/bootmgfw.efi"
+	(That means GRUB has automatically added Windows to the menu.)
+
+IF FAILED
+
+sudo nano /etc/grub.d/40_custom
+
+	menuentry "Windows Boot Manager (UEFI)" {
+	    insmod part_gpt
+	    insmod fat
+	    set root='hd0,gpt1'   # adjust to your EFI partition
+	    chainloader /EFI/Microsoft/Boot/bootmgfw.efi
+	}
+
+sudo update-grub
+
+# to find the correct partition
+lsblk -f
+or
+sudo blkid
+
+
+Look for a small FAT32 partition (usually 100–500 MB) with a label like EFI or SYSTEM.
+Example output:
+
+sda1   vfat   EFI   /boot/efi
+sda2   ext4   root  /
+sda3   ntfs   Windows
+
+ls /boot/efi/EFI/Microsoft/Boot/
+	(You should see bootmgfw.efi. That’s the Windows loader you’ll chainload.)
+
+sdXY -> hdX, gptY
