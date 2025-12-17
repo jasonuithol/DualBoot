@@ -1,0 +1,36 @@
+FROM GRUB
+----------
+
+Press c to enter command line
+
+# to find the location of grub.cfg
+ls
+
+# to then rescue the configuration
+set root=(hdX,gptY)
+configfile=/path/to/grub.cfg
+
+
+FROM LINUX
+------------
+
+# Find your Linux Mint root partition (e.g., /dev/sda2)
+# Find your EFI partition (e.g., /dev/sda1)
+lsblk
+
+# We ASSUME /dev/sda is the device your target OS lives on.
+
+sudo mount /dev/sdaX /mnt              # Your Mint ROOT partition
+sudo mount /dev/sdaY /mnt/boot/efi     # Your EFI partition
+sudo mount --bind /dev /mnt/dev
+sudo mount --bind /proc /mnt/proc
+sudo mount --bind /sys /mnt/sys
+
+sudo chroot /mnt
+
+grub-install /dev/sda              # The disk, not a partition
+update-grub
+
+exit # exit chroot ???
+sudo reboot
+

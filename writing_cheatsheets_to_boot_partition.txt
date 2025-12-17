@@ -1,0 +1,30 @@
+rem (From Windows CMD)
+
+rem 
+rem - Find and mount the partition to Z:
+rem
+
+diskpart
+list disk
+select disk 0    (or whichever disk has your EFI partition)
+list partition
+select partition 1    (usually the small ~100-500MB FAT32 partition)
+assign letter=Z
+exit
+
+
+rem
+rem - Navigate to the partition
+rem
+
+Z:
+dir
+
+
+rem
+rem - Create the cheatsheet
+rem
+
+notepad Z:\grub-help.txt
+
+

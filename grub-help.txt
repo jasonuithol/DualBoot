@@ -1,0 +1,21 @@
+=== GRUB RESCUE CHEAT SHEET ===
+
+1. Find partitions:
+   ls
+   ls (hd0,gpt1)/
+   ls (hd1,gpt1)/
+
+2. Boot Linux manually:
+   set root=(hd0,gptX)
+   linux /boot/vmlinuz root=/dev/sdaX
+   initrd /boot/initrd.img
+   boot
+
+3. Chainload EFI:
+   set root=(hd1,gpt1)
+   chainloader /efi/fedora/shimx64.efi
+   boot
+
+4. Load existing GRUB config:
+   set root=(hd0,gptX)
+   configfile /boot/grub/grub.cfg
