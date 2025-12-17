@@ -4,13 +4,16 @@ rem
 rem - Find and mount the partition to Z:
 rem
 
-diskpart
-list disk
-select disk 0    (or whichever disk has your EFI partition)
-list partition
-select partition 1    (usually the small ~100-500MB FAT32 partition)
-assign letter=Z
-exit
+diskpart              (this enters the DISKPART command line interface)
+
+list volume           (identify the EFI volume, will be about 100Mb, labelled Info=System, Fs=FAT32)
+list disk             (identify the disk that EFI volume lives on - you might have to trial and error it, but it SHOULD be disk 0)
+select disk 0         (or whichever disk has your EFI partition)
+list partition        (identify the partition the EFI volume lives on - this SHOULD correspond to the list volume results from before)
+select partition 1    (usually the small ~100-500MB FAT32 System partition)
+
+assign letter=Z       (mount the EFI volume to Z:)
+exit                  (exit the DISKPART command line interface)
 
 
 rem
